@@ -17,6 +17,7 @@ void delPost();
 void view();
 void viewWithID();
 void viewWithTitle();
+void viewWithCategory();
 
 int main()
 {
@@ -42,7 +43,7 @@ int main()
             delPost();
             break;
         case 4:
-            viewWithTitle();
+            viewWithCategory();
             break;
         case 5:
             runforever = 0;
@@ -290,6 +291,36 @@ void viewWithTitle(){
     getline(cin, title);
     stringstream ss;
     ss<<"SELECT id, title, content, cAspect, date, time FROM se__dbms where title = '" << title <<"'";
+    string query = ss.str();
+    const char* q = query.c_str();
+    if(conn){
+        int qstate = mysql_query(conn, q);
+
+        if(!qstate){
+            res = mysql_store_result(conn);
+            while(row = mysql_fetch_row(res))
+                cout << "\n\nPost Code :\t" << row[0] <<"\nTITLE :\t" << row[1] <<"\nCONTENT :\t" << row[2] <<"\nTOPIC SUBJECT :\t" << row[3] << "\nCREATED ON :\t" << row[4] <<" " << row[5] << endl << endl;
+        }
+    }
+    system("pause");
+    system("cls");
+}
+
+
+void viewWithCategory(){
+    system("cls");
+    string dummy;
+    MYSQL* conn;
+    MYSQL_ROW row;
+    MYSQL_RES* res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
+    string cAspect;
+    cout<< "enter topic category: ";
+    cin.get();
+    getline(cin, cAspect);
+    stringstream ss;
+    ss<<"SELECT id, title, content, cAspect, date, time FROM se__dbms where cAspect = '" << cAspect <<"'";
     string query = ss.str();
     const char* q = query.c_str();
     if(conn){
