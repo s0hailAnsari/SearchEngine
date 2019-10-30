@@ -7,7 +7,6 @@
 #include<mysql.h>
 #include<sstream>
 
-
 using namespace std;
 
 bool dbconn();
@@ -15,18 +14,23 @@ void addPost();
 void editrec();
 void delPost();
 void view();
+void viewAll();
 void viewWithID();
 void viewWithTitle();
 void viewWithCategory();
+
+string dummy;
+MYSQL* conn;
+MYSQL_ROW row;
+MYSQL_RES* res;
 
 int main()
 {
     int runforever = 1;
     int ans;
-
-    while(runforever == 1){
-
-        cout << endl << endl << "---------------" << endl << endl << "1. Add new post" << endl << "2. Edit post" << endl << "3. Delete Posts" << endl << "4. View Posts" << endl << "5. End" << endl << endl << endl << "---------------" << endl;
+    while(runforever){
+    system("cls");
+        cout << endl << endl << "---------------" << endl << endl << "1. Add new post" << endl << "2. Edit post" << endl << "3. Delete Posts" << endl << "4. View Posts" << endl << "5. End" << endl << endl << "---------------" << endl;
 
         cout << endl << "Your Answer : ";
 
@@ -43,10 +47,15 @@ int main()
             delPost();
             break;
         case 4:
-            viewWithCategory();
+            view();
             break;
         case 5:
-            runforever = 0;
+            runforever=1;
+            exit(0);
+            break;
+        default:
+            cout<<endl<<"Wrong choice entered!"<<endl;
+            system("pause");
             break;
         }
     }
@@ -54,12 +63,8 @@ int main()
     return 0;
 }
 
-
-
 void addPost(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     if(conn){
@@ -106,8 +111,6 @@ void addPost(){
 
 void editrec(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     if(conn){
@@ -147,12 +150,8 @@ void editrec(){
 }
 
 void delPost(){
-    system("cls");
-    string dummy;
-    MYSQL* conn;
     MYSQL* conn2;
-    MYSQL_ROW row;
-    MYSQL_RES* res;
+    system("cls");
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
 
@@ -191,11 +190,37 @@ void delPost(){
 }
 
 void view(){
+
+int runforever = 1;
+int ans;
+system("cls");
+while(runforever == 1){
+
+        cout << endl << endl << "---------------" << endl << endl << "1. View all post" << endl << "2. View posts by title" << endl << "3. View posts by Category" << endl << "4. Return to main menu" << endl << endl << "---------------" << endl;
+        cout << endl << "Your Answer : ";
+        cin >> ans;
+
+        switch(ans){
+        case 1:
+            viewAll();
+            break;
+        case 2:
+            viewWithTitle();
+            break;
+        case 3:
+            viewWithCategory();
+            break;
+        case 4:
+            main();
+            break;
+        default:
+            cout<< "Wrong choice entered!";
+        }
+    }
+}
+
+void viewAll(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES* res;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     if(conn){
@@ -222,10 +247,6 @@ void view(){
 
 void viewWithID(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES* res;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     int id;
@@ -279,10 +300,6 @@ void viewWithID(){
 
 void viewWithTitle(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES* res;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     string title;
@@ -309,10 +326,6 @@ void viewWithTitle(){
 
 void viewWithCategory(){
     system("cls");
-    string dummy;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES* res;
     conn = mysql_init(0);
     conn = mysql_real_connect(conn, "192.168.0.110", "admin", "admin", "search_engine", 0, NULL, 0);
     string cAspect;
